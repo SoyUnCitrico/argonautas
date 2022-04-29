@@ -14,10 +14,10 @@ SoftwareSerial mySerial3(9, 8);
 SoftwareSerial mySerial4(3, 2);
 
 
-DFRobotDFPlayerMini player1, player2, player3, player4, player5;
+DFRobotDFPlayerMini player1, player2, player3, player4, player5, player6;
 bool entrada, entrada2, entrada3, entrada4, entrada5;
-bool reproduciendo, reproduciendo2, reproduciendo3, reproduciendo4, reproduciendo5;
-int pista, pista2, pista3, pista4, pista5;
+bool reproduciendo, reproduciendo2, reproduciendo3, reproduciendo4, reproduciendo5, reproduciendo6;
+int pista, pista2, pista3, pista4, pista5, pista6;
 String lecturaBT;
 int ledPIN = 17;
 
@@ -28,18 +28,20 @@ void setup()
   pinMode(SWT3,INPUT);
   pinMode(SWT4,INPUT);
   pinMode(SWT5,INPUT);
-  
+  // TELEFONOS
   mySerial1.begin(9600);
   mySerial2.begin(9600);
-  mySerial3.begin(9600);
-  mySerial4.begin(9600);
+  mySerial3.begin(9600);  mySerial4.begin(9600);
   Serial3.begin(9600);
+  // RING
+  Serial2.begin(9600);
   // MODULO HC-05
   Serial1.begin(115200);
   Serial1.write("INICIANDO BT...");
   // SERIAL USB
   Serial.begin(115200);
   Serial.println("INICIANDO USB...");
+  
   // Declaración de estado inicial de los telefonos
   entrada = 0; 
   entrada2 = 0;
@@ -47,7 +49,7 @@ void setup()
   entrada4 = 0;
   entrada5 = 0;
   
-  reproduciendo = reproduciendo2 = reproduciendo3 = reproduciendo4 = reproduciendo5 = false;
+  reproduciendo = reproduciendo2 = reproduciendo3 = reproduciendo4 = reproduciendo5 = reproduciendo6 = false;
   
   player1.begin(mySerial1);
   player1.volume(15);  //Set volume value (0~30).
@@ -68,6 +70,10 @@ void setup()
   player5.begin(Serial3);
   player5.volume(15);
   player5.outputDevice(DFPLAYER_DEVICE_SD);
+
+  player6.begin(Serial2);
+  player6.volume(30);
+  player6.outputDevice(DFPLAYER_DEVICE_SD);
   
   pinMode(ledPIN, OUTPUT);
 }
@@ -156,21 +162,7 @@ if(entrada5 == 0 && reproduciendo5 == 0) {
   reproduciendo5 = 0;
 }
 
-  if (player1.available()) 
-    printDetail(player1.readType(), player1.read()); 
-    
-  if (player2.available()) 
-    printDetail(player2.readType(), player2.read()); 
-  
-  if (player3.available()) 
-    printDetail(player3.readType(), player3.read()); 
-    
-  if (player4.available()) 
-    printDetail(player4.readType(), player4.read()); 
-  
-  if (player5.available()) 
-    printDetail(player5.readType(), player5.read()); 
-  
+//  checkInfo();
 if(Serial.available() > 0) {
       Serial1.write(Serial.read());
       Serial.flush();
@@ -186,9 +178,13 @@ if(Serial.available() > 0) {
       int encendido = lecturaBT.toInt();
       if(encendido == 0) {
         Serial.println("Apagar TELEFONO");
+        Serial.println("STOP RING");
+        player6.stop();  
         digitalWrite(ledPIN, LOW);
       } else if (encendido == 1) {
         Serial.println("Encender TELEFONO");
+        player6.play(1);
+        Serial.println("RING");
         digitalWrite(ledPIN, HIGH);
       }
     } else {
@@ -252,4 +248,25 @@ void printDetail(uint8_t type, int value){
     default:
       break;
   }
+}
+
+void checkInfo() {
+    if (player1.available()) 
+    printDetail(player1.readType(), player1.read()); 
+    
+  if (player2.available()) 
+    printDetail(player2.readType(), player2.read()); 
+  
+  if (player3.available()) 
+    printDetail(player3.readType(), player3.read()); 
+    
+  if (player4.available()) 
+    printDetail(player4.readType(), player4.read()); 
+  
+  if (player5.available()) 
+    printDetail(player5.readType(), player5.read()); 
+
+  if (player6.available()) 
+    printDetail(player6.readType(), player6.read()); 
+ 
 }
