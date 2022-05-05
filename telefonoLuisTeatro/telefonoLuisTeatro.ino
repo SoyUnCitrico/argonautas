@@ -52,7 +52,7 @@ void setup()
   reproduciendo = reproduciendo2 = reproduciendo3 = reproduciendo4 = reproduciendo5 = reproduciendo6 = false;
   
   player1.begin(mySerial1);
-  player1.volume(15);  //Set volume value (0~30).
+  player1.volume(30);  //Set volume value (0~30).
   player1.outputDevice(DFPLAYER_DEVICE_SD);
   
   player2.begin(mySerial2);
@@ -82,7 +82,7 @@ void loop() {
 //////TELEFONO 1 
 entrada = digitalRead(SWT1);
 if(entrada == 0 && reproduciendo == 0) {
-  pista = int(random(1,31));
+  pista = int(random(1,99));
   delay(200);
   player1.play(pista);
   Serial.println("reproduciendo 1");
@@ -99,7 +99,7 @@ if(entrada == 0 && reproduciendo == 0) {
 ////////TELEFONO 2
 entrada2 = digitalRead(SWT2);
 if(entrada2 == 0 && reproduciendo2 == 0) {
-  pista2 = int(random(1,31));
+  pista2 = int(random(1,99));
   delay(200);
   player2.play(pista2);
   Serial.println("reproduciendo 2");
@@ -116,7 +116,7 @@ if(entrada2 == 0 && reproduciendo2 == 0) {
 //////TELEFONO 3 
 entrada3 = digitalRead(SWT3);
 if(entrada3 == 0 && reproduciendo3 == 0) {
-  pista3 = int(random(1,31));
+  pista3 = int(random(1,99));
   delay(200);
   player3.play(pista3);
   Serial.println("reproduciendo3");
@@ -133,7 +133,7 @@ if(entrada3 == 0 && reproduciendo3 == 0) {
 //////TELEFONO 4
 entrada4 = digitalRead(SWT4);
 if(entrada4 == 0 && reproduciendo4 == 0) {
-  pista4 = int(random(1,31));
+  pista4 = int(random(1,99));
   delay(200);
   player4.play(pista4);
   Serial.println("reproduciendo4");
@@ -149,7 +149,7 @@ if(entrada4 == 0 && reproduciendo4 == 0) {
 //////TELEFONO 5
 entrada5 = digitalRead(SWT5);
 if(entrada5 == 0 && reproduciendo5 == 0) {
-  pista5 = int(random(1,31));
+  pista5 = int(random(1,99));
   delay(200);
   player5.play(pista5);
   Serial.println("reproduciendo5");
